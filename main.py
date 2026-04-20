@@ -23,12 +23,12 @@ def entropy(password, pool):
         return 0
     return len(password) * math.log2(pool)
 
-def crack_time(entropy_value):
+def crack(entropy_value):
     guesses_per_second = 1e9
     total_guesses = 2 ** entropy_value
     return total_guesses / guesses_per_second
 
-def format_time(seconds):
+def time(seconds):
     minutes = seconds / 60
     hours = minutes / 60
     days = hours / 24
@@ -44,7 +44,7 @@ def format_time(seconds):
         return f"{days:.2f} days"
     return f"{years:.2f} years"
 
-def strength_label(entropy_value):
+def strength(entropy_value):
     if entropy_value < 28:
         return "Very Weak"
     elif entropy_value < 36:
@@ -60,8 +60,8 @@ password = input("Enter a password: ")
 
 pool = calculate_pool(password)
 ent = entropy(password, pool)
-time_to_crack = crack_time(ent)
+time_to_crack = crack(ent)
 
 print("Entropy:", round(ent, 2), "bits")
-print("Strength:", strength_label(ent))
-print("Estimated crack time:", format_time(time_to_crack))
+print("Strength:", strength(ent))
+print("Estimated crack time:", time(time_to_crack))
