@@ -3,14 +3,19 @@ import string
 
 def calculate_pool(password):
     pool = 0
+
     if any(c.islower() for c in password):
         pool += 26
+
     if any(c.isupper() for c in password):
         pool += 26
+
     if any(c.isdigit() for c in password):
         pool += 10
+
     if any(c in string.punctuation for c in password):
         pool += len(string.punctuation)
+
     return pool
 
 def entropy(password, pool):
@@ -19,9 +24,9 @@ def entropy(password, pool):
     return len(password) * math.log2(pool)
 
 def crack_time(entropy_value):
-    guesses_per_second = 1e10
-    seconds = (2 ** entropy_value) / guesses_per_second
-    return seconds
+    guesses_per_second = 1e9
+    total_guesses = 2 ** entropy_value
+    return total_guesses / guesses_per_second
 
 def format_time(seconds):
     minutes = seconds / 60
@@ -52,6 +57,7 @@ def strength_label(entropy_value):
         return "Very Strong"
 
 password = input("Enter a password: ")
+
 pool = calculate_pool(password)
 ent = entropy(password, pool)
 time_to_crack = crack_time(ent)
